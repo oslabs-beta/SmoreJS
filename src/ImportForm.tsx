@@ -7,14 +7,22 @@ import TextField from '@material-ui/core/TextField';
 export default function ImportForm() {
 const state = {
   textvalue : 'localhost:3000',
-  loadIframe : ()=>{console.log('button clicked')}
+  loadIframe : ()=>{console.log(state.textvalue)}
+}
+
+const style = {
+  width: '600px' ,
+  height: '600px'
 }
  return (
-    <div >
-      <div>
-        <h2>localhost app</h2>
-       <input type="text" value ={state.textvalue} onClick={state.loadIframe}/>
-        </div>
-        </div>
+    <><div>
+     <div>
+       <h3>localhost app</h3>
+       <input type="text" value={state.textvalue} />
+       <button type="button" >Load</button>
+     </div>
+   </div>
+  <iframe src={state.textvalue} style={style}></iframe >
+  </>
   )
         }
