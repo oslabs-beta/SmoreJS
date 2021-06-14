@@ -1,0 +1,55 @@
+{
+  "name": "SmoreJS",
+  "version": "1.0.0",
+  "description": "State Management Optimatization for Recoil",
+  "main": "./dist/main.js",
+  "scripts": {
+    "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
+    "dev:react": "NODE_ENV=development webpack-dev-server --config webpack.react.config.js --mode development",
+    "build:electron": "NODE_ENV=production webpack --config webpack.electron.config.js --mode production",
+    "build:react": "NODE_ENV=production webpack --config webpack.react.config.js --mode production",
+    "build": "npm run build:electron && npm run build:react",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "Brian Liang, Will Ramirez, Eileen Lee, Phillip Sturgeon",
+  "license": "ISC",
+  "build": {
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "productName": "example",
+    "appId": "com.example.app",
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^5.0.0-alpha.36",
+    "@material-ui/styles": "^5.0.0-alpha.35",
+    "@types/react": "^16.14.8",
+    "@types/react-dom": "^16.9.13",
+    "babel-loader": "^8.1.0",
+    "electron": "^8.2.2",
+    "electron-builder": "^22.7.0",
+    "html-webpack-plugin": "^4.2.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "git": "^0.1.5",
+    "react-flow-renderer": "^9.6.0"
+  }
+}
