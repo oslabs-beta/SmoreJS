@@ -49,6 +49,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "git": "^0.1.5"
+    "git": "^0.1.5",
+    "react-flow-renderer": "^9.6.0"
   }
 }

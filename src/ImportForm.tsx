@@ -6,14 +6,14 @@ interface ImportFormState {
   textvalue: string;
   iframe: string;
   style: object;
-  tag: array;
+  tag: object;
 }
 
 interface ImportFormProps {}
 
 
 export default class ImportForm extends React.Component<ImportFormProps, ImportFormState> {
-  constructor(props) {
+  constructor(props: any) {
     super(props)
     this.state = {
       textvalue: 'http://localhost:3000',
@@ -28,11 +28,14 @@ export default class ImportForm extends React.Component<ImportFormProps, ImportF
 
 handleSubmit(){
   this.setState({iframe: this.state.textvalue});
-  
-  
+  setTimeout(() => {
+    const iFrame: HTMLElement | null = document.getElementById('frameId');
+    const root = iFrame?.contentDocument.getElementById('root');
+    console.log(root._reactRootContainer._internalRoot.current);
+  }, 1000)
 }
 
-handleChange(e){
+handleChange(e: any){
   this.setState({textvalue: e.target.value})
 }
 render(){
@@ -45,7 +48,7 @@ return  (
           <button type="button" onClick={this.handleSubmit}> Load </button>
         </div>
         </div>
-        <iframe src={this.state.iframe} style={this.state.style}></iframe>
+        <iframe id="frameId" src={this.state.iframe} style={this.state.style}></iframe>
         
         </>
     )
