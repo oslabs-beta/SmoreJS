@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "git": "^0.1.5",
-    "react-flow-renderer": "^9.6.0"
+    "react-flow-renderer": "^9.6.0",
+    "recoil": "^0.3.1"
   }
 }
