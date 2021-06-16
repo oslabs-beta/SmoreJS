@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ReactFlow, {
   removeElements,
@@ -8,20 +8,119 @@ import ReactFlow, {
   Background,
 } from 'react-flow-renderer';
 
+import {useRecoilValue} from 'recoil'
+
+import atoms from './atoms';
+
+
+import * as d3 from 'd3';
 import initialElements from './initial-elements';
 
-const onLoad = (reactFlowInstance: any) => {
+const onLoad = (reactFlowInstance) => {
   console.log('flow loaded:', reactFlowInstance);
   reactFlowInstance.fitView();
-  // console.log(rootNode._reactRootContainer._internalRoot.current);
 };
 
 const OverviewFlow = () => {
+  const nodeData =  useRecoilValue(atoms.reactState)
   const [elements, setElements] = useState(initialElements);
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
   const flowStyles = { width: 700, height: 700 };
-
+  const allNodes = [];
+  // useEffect(() => {
+    const getNodes = (node) => {
+      const nodeObj = {
+        id: node._debugID,
+        children: [],
+        name: '',
+      };
+       // recursive algorithm to get all nodes
+       let currentNode = node.child;
+       while (currentNode) {
+       // get all node names
+         if (node.elementType && node.elementType.name) {
+           nodeObj.name = node.elementType?.name;
+         }
+         // get all children and siblings
+         nodeObj.children.push(getNodes(currentNode));
+         currentNode = currentNode.sibling;
+       }
+ 
+       // return node object
+       return nodeObj;
+     };
+     
+     
+     // assign variable to result of invocation of calling getNodes function of root
+     const nodes = getNodes(nodeData);
+     
+    //  const nodes = getNodes(document.getElementById('root')._reactRootContainer._internalRoot.current);
+ 
+     allNodes.push(nodes);
+     // logs node object
+     console.log('big obj', nodes);
+ 
+     // d3 component tree rough outline
+     // recursive algorithm to display all nodes in a nested list
+     const displayComponentTree = (parent_ul, fiberNodes) => {
+       let current_ul;
+       let current_li;
+ 
+       if (parent_ul === null) {
+         parent_ul = d3.select('body').append('ul');
+       }
+ 
+       current_li = parent_ul.append('li').text(fiberNodes.name);
+ 
+       if (fiberNodes.children) {
+         current_ul = current_li.append('ul');
+ 
+         for (let i = 0; i < fiberNodes.children.length; i += 1) {
+           displayComponentTree(current_ul, fiberNodes.children[i]);
+         }
+       }
+     };
+ 
+     // call displayCompenentTree
+     displayComponentTree(null, nodes);
+ 
+     const addDepth = (arr, depth = 0) => {
+       arr.forEach((obj) => {
+         obj.depth = depth;
+         addDepth(obj.children, depth + 1);
+       });
+     };
+ 
+     addDepth(allNodes);
+ 
+     console.log('array of big obj', allNodes);
+ 
+     // function to organize by id, depth, and name
+     // push in order from lowest to highest depth
+ 
+     function getNamedComponents(arr, namedComponents = []) {
+       arr.forEach((obj) => {
+         // console.log(obj.name);
+         if (obj.name !== '') {
+           namedComponents.push(obj);
+         }
+ 
+         getNamedComponents(obj.children, namedComponents);
+       });
+       return namedComponents;
+     }
+ 
+     console.log('named', getNamedComponents(allNodes));
+ 
+     // setElements(
+     //   (nodes) => {
+ 
+     //   },
+     // );
+  //  }, []);
+ 
+   // console.log('el', elements);
   return (
     <ReactFlow
       elements={elements}
@@ -31,6 +130,8 @@ const OverviewFlow = () => {
       snapToGrid
       snapGrid={[15, 15]}
       style={flowStyles}
+      width="700px"
+      height="700px"
     >
       <MiniMap
         nodeStrokeColor={(n: any) => {
