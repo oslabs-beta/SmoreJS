@@ -1,44 +1,32 @@
 import React, { FunctionComponent } from 'react';
+
 import {
   atom,
   useRecoilState,
   useRecoilValue,
+  useSetRecoilState
 } from 'recoil';
 
-const textState = atom({
-  key: 'text',
-  default: 'http://localhost:3000'
-});
-
-const iframeState = atom({
-  key: 'iframe',
-  default: ''
-})
-
-const styleState = atom({
-  key: 'style',
-  default: {width: '600px',
-  height: '900px'}
-})
-
+import atoms from './atoms';
 
 
 
 const ImportForm : FunctionComponent = ({}) =>{
-  const [text, setText] = useRecoilState(textState)
-  const [iframe, setIframe] = useRecoilState(iframeState) 
-  const textValue = useRecoilValue(textState)
-  const iframeValue = useRecoilValue(iframeState)
-  const styleValue = useRecoilValue(styleState)
-
+  const [text, setText] = useRecoilState(atoms.textState)
+  const [iframe, setIframe] = useRecoilState(atoms.iframeState) 
+  const textValue = useRecoilValue(atoms.textState)
+  const iframeValue = useRecoilValue(atoms.iframeState)
+  const styleValue = useRecoilValue(atoms.styleState)
+  const [reactValue, setReactValue] = useRecoilState(atoms.reactState);
   
 function handleSubmit(){
   setIframe(text);
   setTimeout(() => {
     const iFrame: HTMLElement | null = document.getElementById('frameId');
     const root = iFrame?.contentDocument.getElementById('root');
-    console.log(root._reactRootContainer._internalRoot.current);
-  }, 1000)
+    setReactValue(root._reactRootContainer._internalRoot.current)
+     }, 1000)
+  
 }
 
 const handleChange = (e: object) =>{
@@ -55,7 +43,7 @@ return  (
         </div>
         </div>
         <iframe id="frameId" src={iframeValue} style={styleValue}></iframe>
-        
+       
         </>
     )
 }
