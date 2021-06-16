@@ -45,7 +45,7 @@ return  (
         <div>
           <h3>localhost app</h3>
           <input type="text" value={this.state.textvalue} onChange={this.handleChange} />
-          <button type="button" onClick={this.handleSubmit}> Load </button>
+          <button type="button" onClick={this.handleSubmit} > Load </button>
         </div>
         </div>
         <iframe id="frameId" src={this.state.iframe} style={this.state.style}></iframe>
