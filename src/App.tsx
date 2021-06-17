@@ -13,9 +13,9 @@ const App = () => {
   return (
     <><h1>State Management Optimizer of React and Recoil</h1>
       <RecoilRoot>
-      <ImportForm />
-      <OverviewFlow />
-      <StateDisplay/>
+        <ImportForm />
+        <OverviewFlow /> 
+        <StateDisplay/>
       </RecoilRoot>
     </>
 

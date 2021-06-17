@@ -9,7 +9,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 
 import {useRecoilValue} from 'recoil'
-
+import { getNodes, checkChild } from './FiberParsingAlgo';
 import atoms from './atoms';
 
 
@@ -23,104 +23,123 @@ const onLoad = (reactFlowInstance) => {
 
 const OverviewFlow = () => {
   const nodeData =  useRecoilValue(atoms.reactState)
-  const [elements, setElements] = useState(initialElements);
+  const [elements, setElements] = useState([]);
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
   const flowStyles = { width: 700, height: 700 };
-  const allNodes = [];
-  // useEffect(() => {
-    const getNodes = (node) => {
-      const nodeObj = {
-        id: node._debugID,
-        children: [],
-        name: '',
-      };
-       // recursive algorithm to get all nodes
-       let currentNode = node.child;
-       while (currentNode) {
-       // get all node names
-         if (node.elementType && node.elementType.name) {
-           nodeObj.name = node.elementType?.name;
-         }
-         // get all children and siblings
-         nodeObj.children.push(getNodes(currentNode));
-         currentNode = currentNode.sibling;
-       }
+  
+  // assign variable to result of invocation of calling getNodes function of root
+  const nodes = [getNodes(nodeData)];
+  console.log('nodeObj', nodes[0]);
+  // d3 component tree rough outline
+  // recursive algorithm to display all nodes in a nested list
+  // const displayComponentTree = (parent_ul, fiberNodes) => {
+  //   let current_ul;
+  //   let current_li;
+
+  //   if (parent_ul === null) {
+  //     parent_ul = d3.select('body').append('ul');
+  //   }
+
+  //   current_li = parent_ul.append('li').text(fiberNodes.name);
+
+  //   if (fiberNodes.children) {
+  //     current_ul = current_li.append('ul');
+
+  //     for (let i = 0; i < fiberNodes.children.length; i += 1) {
+  //       displayComponentTree(current_ul, fiberNodes.children[i]);
+  //     }
+  //   }
+  // };
  
-       // return node object
-       return nodeObj;
-     };
-     
-     
-     // assign variable to result of invocation of calling getNodes function of root
-     const nodes = getNodes(nodeData);
-     
-    //  const nodes = getNodes(document.getElementById('root')._reactRootContainer._internalRoot.current);
- 
-     allNodes.push(nodes);
-     // logs node object
-     console.log('big obj', nodes);
- 
-     // d3 component tree rough outline
-     // recursive algorithm to display all nodes in a nested list
-     const displayComponentTree = (parent_ul, fiberNodes) => {
-       let current_ul;
-       let current_li;
- 
-       if (parent_ul === null) {
-         parent_ul = d3.select('body').append('ul');
-       }
- 
-       current_li = parent_ul.append('li').text(fiberNodes.name);
- 
-       if (fiberNodes.children) {
-         current_ul = current_li.append('ul');
- 
-         for (let i = 0; i < fiberNodes.children.length; i += 1) {
-           displayComponentTree(current_ul, fiberNodes.children[i]);
-         }
-       }
-     };
- 
-     // call displayCompenentTree
-     displayComponentTree(null, nodes);
- 
-     const addDepth = (arr, depth = 0) => {
-       arr.forEach((obj) => {
-         obj.depth = depth;
-         addDepth(obj.children, depth + 1);
-       });
-     };
- 
-     addDepth(allNodes);
- 
-     console.log('array of big obj', allNodes);
- 
-     // function to organize by id, depth, and name
-     // push in order from lowest to highest depth
- 
-     function getNamedComponents(arr, namedComponents = []) {
-       arr.forEach((obj) => {
-         // console.log(obj.name);
-         if (obj.name !== '') {
-           namedComponents.push(obj);
-         }
- 
-         getNamedComponents(obj.children, namedComponents);
-       });
-       return namedComponents;
-     }
- 
-     console.log('named', getNamedComponents(allNodes));
- 
-     // setElements(
-     //   (nodes) => {
- 
-     //   },
-     // );
-  //  }, []);
- 
-   // console.log('el', elements);
+  // // call displayCompenentTree
+  // displayComponentTree(null, nodes[0]);
+
+  const addDepth = (arr, depth = 0) => {
+    arr.forEach((obj) => {
+      obj.depth = depth;
+      addDepth(obj.children, depth + 1);
+    });
+  };
+
+  addDepth(nodes);
+  type els = {
+    id: string;
+    type: string | null;
+    data: object;
+    position: object;
+    children: any;
+    depth: number;
+  }
+
+  function getNamedComponents(arr, arrayOfElements: any = [], numOfComponents: any = [0]) {
+    arr.forEach((obj) => {
+      // console.log(obj.name);
+      if (obj.name) {
+        numOfComponents[0] += 1
+        const newElements: els = {
+          id: '',
+          type: null,
+          data: {},
+          position: {},
+          children: [],
+          depth: 0,
+        };
+        // if ( numOfComponents[0] === 1 ) 
+        newElements.type = 'input';
+        newElements.id = numOfComponents[0].toString();
+        newElements.data = {
+          label: obj.name,
+        };
+        newElements.depth = obj.depth;
+        newElements.position = { x: 250, y: 50 * numOfComponents };
+        newElements.children.push(obj.children) 
+        arrayOfElements.push(newElements);
+
+        // namedComponents.push(obj);
+      }
+      getNamedComponents(obj.children, arrayOfElements, numOfComponents);
+    });
+    return arrayOfElements;
+  }
+  
+  const linkingTree = (treeData) : any => {
+    //iterate through the tree data and make sure child is present before linking
+    for (let i = treeData.length -1 ; i >= 0 ; i -= 1) {
+      const curTreeNode = treeData[i];
+      //assign a pointer to check all other components
+      let j = i - 1;
+      while (j >=0) {
+        //console.log(checkChild(curTreeNode,treeData[j]));
+        if (checkChild(curTreeNode, treeData[j]) ) {
+          const newLink = {
+            id: '',
+            source: '',
+            target: '',
+            type: 'smoothstep',
+            animated: true
+          };
+          newLink.id = `e${j + 1}-${i + 1}`;
+          newLink.source = treeData[j]?.id;
+          newLink.target = curTreeNode?.id;
+
+          components.push(newLink);
+          break;
+        }
+        j -= 1
+      }
+    }
+  }
+      
+  const components: any = getNamedComponents(nodes);
+  if(components) {
+    linkingTree(components);
+  }    
+  
+  useEffect(() => {
+    setElements( components)
+  }, [nodeData]);
+
   return (
     <ReactFlow
       elements={elements}
@@ -156,3 +175,4 @@ const OverviewFlow = () => {
 };
 
 export default OverviewFlow;
+

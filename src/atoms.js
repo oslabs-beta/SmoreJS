@@ -19,7 +19,7 @@ atoms.styleState = atom({
 
 atoms.reactState = atom({
   key: 'reactState',
-  default: [],
+  default: {},
 })
 
 export default atoms
