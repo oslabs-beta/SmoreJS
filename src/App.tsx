@@ -19,18 +19,12 @@ const App = () => {
       </center>
       <center><h3>State Management Optimization for Recoil</h3></center>
       <RecoilRoot>
-<<<<<<< HEAD
-        <ImportForm />
-        <OverviewFlow /> 
-        <StateDisplay/>
-=======
       
       <div id="middle">
       <ImportForm />
       <OverviewFlow />
       </div>
       <StateDisplay/>
->>>>>>> main
       </RecoilRoot>
     </>
 

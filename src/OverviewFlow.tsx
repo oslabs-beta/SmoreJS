@@ -26,7 +26,7 @@ const OverviewFlow = () => {
   const [elements, setElements] = useState([]);
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
-  const flowStyles = { width: 500, height: 500 };
+  const flowStyles = { width: 700, height: 500 };
   
   // assign variable to result of invocation of calling getNodes function of root
   const nodes = [getNodes(nodeData)];
