@@ -47,7 +47,7 @@ return  (
         </div>
         </div>
         <iframe id="frameId" src={iframeValue} style={styleValue} ></iframe>
-       
+      
         </>
     )
 }
