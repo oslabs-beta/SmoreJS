@@ -11,11 +11,6 @@ atoms.iframeState = atom({
   default: ''
 })
 
-atoms.styleState = atom({
-  key: 'style',
-  default: {width: '600px',
-  height: '900px'}
-})
 
 atoms.reactState = atom({
   key: 'reactState',

@@ -26,7 +26,7 @@ const OverviewFlow = () => {
   const [elements, setElements] = useState([]);
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
-  const flowStyles = { width: 700, height: 700 };
+  const flowStyles = { width: 500, height: 500 };
   
   // assign variable to result of invocation of calling getNodes function of root
   const nodes = [getNodes(nodeData)];
@@ -141,7 +141,9 @@ const OverviewFlow = () => {
   }, [nodeData]);
 
   return (
-    <ReactFlow
+    <>
+      <div id="flow-pad">
+      <ReactFlow
       elements={elements}
       onElementsRemove={onElementsRemove}
       onConnect={onConnect}
@@ -149,28 +151,32 @@ const OverviewFlow = () => {
       snapToGrid
       snapGrid={[15, 15]}
       style={flowStyles}
-      width="700px"
-      height="700px"
     >
       <MiniMap
         nodeStrokeColor={(n: any) => {
-          if (n.style?.background) return n.style.background;
-          if (n.type === 'input') return '#0041d0';
-          if (n.type === 'output') return '#ff0072';
-          if (n.type === 'default') return '#1a192b';
+          if (n.style?.background)
+            return n.style.background;
+          if (n.type === 'input')
+            return '#0041d0';
+          if (n.type === 'output')
+            return '#ff0072';
+          if (n.type === 'default')
+            return '#1a192b';
 
           return '#eee';
-        }}
+        } }
         nodeColor={(n: any) => {
-          if (n.style?.background) return n.style.background;
+          if (n.style?.background)
+            return n.style.background;
 
           return '#fff';
-        }}
-        nodeBorderRadius={2}
-      />
+        } }
+        nodeBorderRadius={2} />
       <Controls />
       <Background color="#aaa" gap={16} />
-    </ReactFlow>
+      </ReactFlow>
+    </div>
+    </>
   );
 };
 
