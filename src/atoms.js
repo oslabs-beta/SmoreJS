@@ -14,7 +14,7 @@ atoms.iframeState = atom({
 
 atoms.reactState = atom({
   key: 'reactState',
-  default: [],
+  default: {},
 })
 
 export default atoms
