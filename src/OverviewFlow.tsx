@@ -26,7 +26,7 @@ const OverviewFlow = () => {
   const [elements, setElements] = useState(initialElements);
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
-  const flowStyles = { width: 700, height: 700 };
+  const flowStyles = { width: 500, height: 500 };
   const allNodes = [];
   // useEffect(() => {
     const getNodes = (node) => {
@@ -63,27 +63,27 @@ const OverviewFlow = () => {
  
      // d3 component tree rough outline
      // recursive algorithm to display all nodes in a nested list
-     const displayComponentTree = (parent_ul, fiberNodes) => {
-       let current_ul;
-       let current_li;
+    //  const displayComponentTree = (parent_ul, fiberNodes) => {
+    //    let current_ul;
+    //    let current_li;
  
-       if (parent_ul === null) {
-         parent_ul = d3.select('body').append('ul');
-       }
+    //    if (parent_ul === null) {
+    //      parent_ul = d3.select('body').append('ul');
+    //    }
  
-       current_li = parent_ul.append('li').text(fiberNodes.name);
+    //    current_li = parent_ul.append('li').text(fiberNodes.name);
  
-       if (fiberNodes.children) {
-         current_ul = current_li.append('ul');
+    //    if (fiberNodes.children) {
+    //      current_ul = current_li.append('ul');
  
-         for (let i = 0; i < fiberNodes.children.length; i += 1) {
-           displayComponentTree(current_ul, fiberNodes.children[i]);
-         }
-       }
-     };
+    //      for (let i = 0; i < fiberNodes.children.length; i += 1) {
+    //        displayComponentTree(current_ul, fiberNodes.children[i]);
+    //      }
+    //    }
+    //  };
  
-     // call displayCompenentTree
-     displayComponentTree(null, nodes);
+    //  // call displayCompenentTree
+    //  displayComponentTree(null, nodes);
  
      const addDepth = (arr, depth = 0) => {
        arr.forEach((obj) => {
@@ -122,7 +122,9 @@ const OverviewFlow = () => {
  
    // console.log('el', elements);
   return (
-    <ReactFlow
+    <>
+      <div id="flow-pad">
+      <ReactFlow
       elements={elements}
       onElementsRemove={onElementsRemove}
       onConnect={onConnect}
@@ -130,28 +132,32 @@ const OverviewFlow = () => {
       snapToGrid
       snapGrid={[15, 15]}
       style={flowStyles}
-      width="700px"
-      height="700px"
     >
       <MiniMap
         nodeStrokeColor={(n: any) => {
-          if (n.style?.background) return n.style.background;
-          if (n.type === 'input') return '#0041d0';
-          if (n.type === 'output') return '#ff0072';
-          if (n.type === 'default') return '#1a192b';
+          if (n.style?.background)
+            return n.style.background;
+          if (n.type === 'input')
+            return '#0041d0';
+          if (n.type === 'output')
+            return '#ff0072';
+          if (n.type === 'default')
+            return '#1a192b';
 
           return '#eee';
-        }}
+        } }
         nodeColor={(n: any) => {
-          if (n.style?.background) return n.style.background;
+          if (n.style?.background)
+            return n.style.background;
 
           return '#fff';
-        }}
-        nodeBorderRadius={2}
-      />
+        } }
+        nodeBorderRadius={2} />
       <Controls />
       <Background color="#aaa" gap={16} />
-    </ReactFlow>
+      </ReactFlow>
+    </div>
+    </>
   );
 };
 
