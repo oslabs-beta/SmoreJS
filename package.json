@@ -49,9 +49,13 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "css-loader": "^5.2.6",
     "d3": "^7.0.0",
+    "file-loader": "^6.2.0",
     "git": "^0.1.5",
     "react-flow-renderer": "^9.6.0",
-    "recoil": "^0.3.1"
+    "recoil": "^0.3.1",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1"
   }
 }

@@ -3,18 +3,27 @@ import ReactDom from 'react-dom';
 import ImportForm from './ImportForm';
 import OverviewFlow from './OverviewFlow';
 import StateDisplay from './StateDisplay';
-
-import {RecoilRoot} from 'recoil';
+import './style.css';
+import logo from '../assets/fullLogoSmoreJS.png';
+import { RecoilRoot } from 'recoil';
 
 const mainElement = document.createElement('div');
 document.body.appendChild(mainElement);
 
 const App = () => {
   return (
-    <><h1>State Management Optimizer of React and Recoil</h1>
+
+    <>
+      <center>
+        <img id="SmoreLogo" src={logo}/>
+      </center>
+      <center><h3>State Management Optimization for Recoil</h3></center>
       <RecoilRoot>
+      
+      <div id="middle">
       <ImportForm />
       <OverviewFlow />
+      </div>
       <StateDisplay/>
       </RecoilRoot>
     </>

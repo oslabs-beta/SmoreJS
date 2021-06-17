@@ -1,0 +1,41 @@
+body {
+}
+
+#top {
+}
+
+#SmoreLogo {
+  height: 100px;
+  width: auto;
+}
+/*imported app and tree */
+#middle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 2em;
+}
+
+#importForm {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+#importFormButton {
+  height: 100px;
+}
+
+#flow-pad {
+  margin-top: 50px;
+}
+
+#frameId {
+  height: 100%;
+  width: 500px;
+}
+
+#stateData {
+  display: flex;
+  justify-content: center;
+}
+/* data */
