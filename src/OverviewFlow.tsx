@@ -26,7 +26,7 @@ const OverviewFlow = () => {
   const [elements, setElements] = useState([]);
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
-  const flowStyles = { width: 700, height: 500 };
+  const flowStyles = { width: '100%', height: 700 };
   
   // assign variable to result of invocation of calling getNodes function of root
   const nodes = [getNodes(nodeData)];
@@ -143,6 +143,9 @@ const OverviewFlow = () => {
   return (
     <>
       <div id="flow-pad">
+        <div id='component-tree-tag'>
+          <h3>Component Tree</h3>
+        </div>
       <ReactFlow
       elements={elements}
       onElementsRemove={onElementsRemove}
