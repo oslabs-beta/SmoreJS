@@ -8,29 +8,31 @@ import logo from '../assets/fullLogoSmoreJS.png';
 import { RecoilRoot } from 'recoil';
 
 const mainElement = document.createElement('div');
+mainElement.id = 'root';
 document.body.appendChild(mainElement);
 
 const App = () => {
   return (
-
     <>
       <center>
         <img id="SmoreLogo" src={logo}/>
       </center>
-      <center><h3>State Management Optimization for Recoil</h3></center>
+      <center>
+        <h3>State Management Optimization for Recoil</h3>
+      </center>
+      <br></br>
       <RecoilRoot>
       
       <div id="middle">
-      <ImportForm />
-      <OverviewFlow />
+        <ImportForm />
+        <OverviewFlow />
       </div>
       <StateDisplay/>
       </RecoilRoot>
     </>
-
   )
 }
 
 
 
-ReactDom.render(<App />, mainElement);
+ReactDom.render(<App />, document.getElementById('root'));
