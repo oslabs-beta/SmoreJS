@@ -1,0 +1,60 @@
+body {
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%; 
+  /* overflow: hidden; */
+  background-color: rgb(250, 249, 246);
+}
+
+#top {
+}
+
+#SmoreLogo {
+  height: 100px;
+  width: auto;
+  margin-top: 50px;
+}
+/*imported app and tree */
+#middle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 2em;
+  height: 100%;
+  /* align-content: space-between; */
+}
+
+#importForm {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+}
+
+#importFormButton {
+  /* height: px; */
+  /* display: flex;
+  flex-direction: row; */
+}
+
+#flow-pad {
+  margin-top: 81px;
+  width: 45%;
+  border: black solid 1px;
+}
+
+#frameId {
+  height: 100%;
+  width: 100%;
+}
+
+#stateData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-around;
+}
+
+#component-tree-tag {
+  margin-top: -50px;
+}
+/* data */

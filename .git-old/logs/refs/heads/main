@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 0aa778fa7b23e5d58ab5675b8b3b7e88ceaeef0c Brian Liang <brianliang94@yahoo.com> 1623706799 -0700	commit (initial): Restablizing electron and react application
+0aa778fa7b23e5d58ab5675b8b3b7e88ceaeef0c 0aa778fa7b23e5d58ab5675b8b3b7e88ceaeef0c Brian Liang <brianliang94@yahoo.com> 1623706902 -0700	Branch: renamed refs/heads/master to refs/heads/main
+0aa778fa7b23e5d58ab5675b8b3b7e88ceaeef0c bcf489db3e84b3f1a5aee34893e7226a7761baf6 Brian Liang <brianliang94@yahoo.com> 1623829627 -0700	commit: commiting to merge main repo to current repo
+bcf489db3e84b3f1a5aee34893e7226a7761baf6 d9a91f255c95084ddfa2f7277c1ffaabb4c3e1b1 Brian Liang <brianliang94@yahoo.com> 1623830263 -0700	commit (merge): manage merges
+d9a91f255c95084ddfa2f7277c1ffaabb4c3e1b1 46bf59b54c1667d535b52eb9827fdf9bd88136d3 Brian Liang <brianliang94@yahoo.com> 1623953782 -0700	commit (merge): pulled changes from main

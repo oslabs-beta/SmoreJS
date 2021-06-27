@@ -1,4 +1,6 @@
 const path = require("path");
+const webpack = require('webpack');
+
 
 module.exports = {
   resolve: {
@@ -29,6 +31,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
+    // new webpack.IgnorePlugin({ resourceRegExp: /^aws-sdk$/ }),
+    // new webpack.IgnorePlugin({ resourceRegExp: /^mock-aws-s3$/ }),
+    // new webpack.IgnorePlugin({ resourceRegExp: /^nock$/ }),
+  ],
   node: {
     __dirname: false,
   },
