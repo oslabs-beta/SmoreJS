@@ -18,7 +18,7 @@ const App = () => {
         <img id="SmoreLogo" src={logo}/>
       </center>
       <center>
-        <h3>State Management Optimization for Recoil</h3>
+        <h2>State Management Optimization for Recoil</h2>
       </center>
       <br></br>
       <RecoilRoot>

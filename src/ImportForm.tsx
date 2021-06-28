@@ -7,8 +7,11 @@ import {
   useSetRecoilState
 } from 'recoil';
 
+import {TextField, Button} from '@material-ui/core/';
 import atoms from './atoms';
-import { getFiberRoot } from './FiberParsingAlgo';
+import 'typeface-roboto'
+
+import { getFiberRoot, reactHooksData } from './FiberParsingAlgo';
 
 const ImportForm : FunctionComponent = ({}) =>{
   const [text, setText] = useRecoilState(atoms.textState)
@@ -36,9 +39,14 @@ return  (
     <div id ="importForm">
       <div id="importFormButton">
           <h3>localhost app</h3>
-          <input type="text" value={textValue} onChange={handleChange} />
-          <button type="button" onClick={handleSubmit}> Load </button>
-          <button type="button" onClick={handleClick}> Update </button>
+          <div id="dash">
+          <form noValidate autoComplete="off">
+          <TextField id="standard-basic" value={textValue} label='App address' onChange={handleChange}  />
+          </form>
+          
+          <Button variant="contained" color="primary"onClick={handleSubmit}> Load </Button>
+          <Button variant="contained" color="primary" onClick={handleClick}> Update</Button>
+          </div>
       </div>
         <iframe id="frameId" src={iframeValue} ></iframe>
     </div>

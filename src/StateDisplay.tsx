@@ -38,7 +38,7 @@ function getRecoilStates(arr, components: any = []) {
 }
 
 const recoilState = getRecoilStates([getReact]);
-console.log(recoilState);
+// console.log(recoilState);
 const displayData: any = [];
 
 recoilState.forEach(el => {
@@ -49,7 +49,7 @@ return (
   <>
   <center>
     <div id="stateData">
-      <h1>Recoil Atoms</h1>
+      <h2>Recoil Atoms</h2>
       <div>
         {displayData}
       </div>

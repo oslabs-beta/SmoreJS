@@ -9,7 +9,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 
 import {useRecoilValue} from 'recoil'
-import { getNodes, checkChild } from './FiberParsingAlgo';
+import { getNodes, checkChild, whereIsWaldo } from './FiberParsingAlgo';
 import atoms from './atoms';
 
 
@@ -17,7 +17,7 @@ import * as d3 from 'd3';
 import initialElements from './initial-elements';
 
 const onLoad = (reactFlowInstance) => {
-  console.log('flow loaded:', reactFlowInstance);
+  // console.log('flow loaded:', reactFlowInstance);
   reactFlowInstance.fitView();
 };
 
@@ -29,8 +29,13 @@ const OverviewFlow = () => {
   const flowStyles = { width: '100%', height: 700 };
   
   // assign variable to result of invocation of calling getNodes function of root
+  //whereIsWaldo
+
+  // console.log('Waldo?: ', whereIsWaldo(nodeData))
+  
+
   const nodes = [getNodes(nodeData)];
-  console.log('nodeObj', nodes[0]);
+  // console.log('nodeObj', nodes[0]);
   // d3 component tree rough outline
   // recursive algorithm to display all nodes in a nested list
   // const displayComponentTree = (parent_ul, fiberNodes) => {
