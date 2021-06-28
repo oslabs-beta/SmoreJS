@@ -1,7 +1,8 @@
-import {useRecoilValue} from 'recoil'
 import lodash from 'lodash'
 
-export const getNodes = (node: any) => {
+export const getNodes = ((node: any) => {
+  // recursive algorithm to get all nodes
+  let currentNode = node?.child;
   const nodeObj = {
     id: node?._debugID,
     tag: node?.tag,
@@ -9,8 +10,6 @@ export const getNodes = (node: any) => {
     name: '',
     recoilNode: getRecoilStateData(node),
   };
-  // recursive algorithm to get all nodes
-  let currentNode = node?.child;
   while (currentNode) { // get all node names
     if (node?.elementType && node?.elementType.name) {
       nodeObj.name = node?.elementType?.name;
@@ -22,10 +21,19 @@ export const getNodes = (node: any) => {
   // return node object
   // console.log('nodeObj', nodeObj)
   return nodeObj; 
-};
+});
 
-const getRecoilStateData = (node): any => {
-  const cache: any = [];
+type cache = {
+  atomSelector: any[],
+  changes: any,
+} 
+
+const getRecoilStateData = (node: any) => {
+  // const [recoilValue, setRecoil] = useRecoilState(atoms.recoilState);
+  const cache: cache = {
+    atomSelector: [],
+    changes: {}
+  };
   if (node.tag === 0 ||  node.tag === 1) {
     let findingDeps: boolean = true;
     let curMemoizedNode = node.memoizedState?.memoizedState
@@ -35,8 +43,14 @@ const getRecoilStateData = (node): any => {
       while (findingDeps) {
         if(curMemoizedNode.deps) {
           if (curMemoizedNode.deps[1].key) {
-            cache.push(curMemoizedNode.deps[1]);
-            findingDeps = false;
+            if(cache.atomSelector.includes(curMemoizedNode.deps[1])) {
+              // setRecoil(curMemoizedNode.deps[2].current.getState());
+              findingDeps = false;
+            }
+            else {
+              cache.atomSelector.push(curMemoizedNode.deps[1]);
+              cache.changes = lodash.cloneDeep(curMemoizedNode.deps[2].current.getState());
+            }
           }
         }
         if (curMemoizedNode.next) {
@@ -58,7 +72,8 @@ export const getFiberRoot = () => {
   const root = iFrame?.contentDocument.getElementById('root');
   const fiberData = lodash.cloneDeep(root?._reactRootContainer._internalRoot.current);
   console.log('from fiberparsing', fiberData);
-  return fiberData;
+  const fiberParsedData = getNodes(fiberData);
+  return fiberParsedData;
 };
    
 //checking if child is in parent
@@ -88,4 +103,23 @@ export const checkChild = ( child: any, parent: any, boolean = [false] ) => {
     })
   }
   return boolean[0];
+};
+
+export const getRecoilData = (node: any) => {
+  let recoilData: any;
+
+  const lookingForData = (curNode: any) => {
+    curNode.forEach(el => {
+      if(el.recoilNode.changes.currentTree) {
+        recoilData = el.recoilNode.changes
+      }
+      else if(el.children) {
+        lookingForData(el.children)
+      }
+    })
+    return;
+  }
+  lookingForData(node.children);
+
+  return recoilData;
 }

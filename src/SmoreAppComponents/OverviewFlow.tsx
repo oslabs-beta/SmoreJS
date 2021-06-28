@@ -8,18 +8,30 @@ import ReactFlow, {
   Background,
 } from 'react-flow-renderer';
 
-import {useRecoilValue} from 'recoil'
-import { getNodes, checkChild } from './FiberParsingAlgo';
-import atoms from './atoms';
+import {useRecoilValue, useRecoilState} from 'recoil'
+import { getNodes, checkChild } from '../FiberParsingAlgo.tsx';
+import atoms from '../atoms';
 
 
 import * as d3 from 'd3';
-import initialElements from './initial-elements';
+import initialElements from '../initial-elements';
 
 const onLoad = (reactFlowInstance) => {
   console.log('flow loaded:', reactFlowInstance);
   reactFlowInstance.fitView();
 };
+
+// function DebugObserver(): React.Node {
+//   const snapshot = useRecoilSnapshot();
+//   useEffect(() => {
+//     console.debug('The following atoms were modified:');
+//     for (const node of snapshot.getNodes_UNSTABLE({isModified: true})) {
+//       console.debug(node.key, snapshot.getLoadable(node));
+//     }
+//   }, [snapshot]);
+
+//   return null;
+// }
 
 const OverviewFlow = () => {
   const nodeData =  useRecoilValue(atoms.reactState)
@@ -27,10 +39,13 @@ const OverviewFlow = () => {
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
   const flowStyles = { width: '100%', height: 700 };
-  
+  // const recoilValue = useRecoilValue(atoms.recoilState);
+  // console.log(nodeData);
   // assign variable to result of invocation of calling getNodes function of root
-  const nodes = [getNodes(nodeData)];
-  console.log('nodeObj', nodes[0]);
+  // const nodes = [getNodes(nodeData)];
+  // console.log('nodeObj', nodes[0]);
+  // console.log('hello', recoilValue);
+  
   // d3 component tree rough outline
   // recursive algorithm to display all nodes in a nested list
   // const displayComponentTree = (parent_ul, fiberNodes) => {
@@ -62,7 +77,8 @@ const OverviewFlow = () => {
     });
   };
 
-  addDepth(nodes);
+  // addDepth([nodeData]);
+
   type els = {
     id: string;
     type: string | null;
@@ -73,7 +89,7 @@ const OverviewFlow = () => {
   }
 
   function getNamedComponents(arr, arrayOfElements: any = [], numOfComponents: any = [0]) {
-    arr.forEach((obj) => {
+    arr?.forEach((obj) => {
       // console.log(obj.name);
       if (obj.name) {
         numOfComponents[0] += 1
@@ -131,12 +147,13 @@ const OverviewFlow = () => {
     }
   }
       
-  const components: any = getNamedComponents(nodes);
+  const components: any = getNamedComponents([nodeData]);
   if(components) {
     linkingTree(components);
   }    
   
   useEffect(() => {
+    // setRecoil(recoilObject);
     setElements( components)
   }, [nodeData]);
 
