@@ -6,7 +6,8 @@ import {
   useRecoilValue,
   useSetRecoilState
 } from 'recoil';
-
+import {TextField, Button} from '@material-ui/core/';
+import 'typeface-roboto'
 import atoms from '../atoms';
 import { getFiberRoot, getRecoilData } from '../FiberParsingAlgo.tsx';
 
@@ -17,6 +18,7 @@ const ImportForm : FunctionComponent = ({}) =>{
   const iframeValue = useRecoilValue(atoms.iframeState)
   const [testLog, setTestLog]: any[] = useRecoilState(atoms.recoilLog);
   const [reactValue, setReactValue] = useRecoilState(atoms.reactState);
+  const [recoilObjValue, setRecoilObjValue] = useRecoilState(atoms.recoilObj)
   
 function handleSubmit(){
   setIframe(text);
@@ -100,6 +102,7 @@ const handleClick = () => {
     }
     console.log('101', recoilObj);
     recoilObj.atomSelectorValuesNonDefault = getAtomSelectorValues(currentRecoilData.currentTree.atomValues._hamt._root.children, recoilObj)
+    setRecoilObjValue(recoilObj)
 
     if (testLog[0]) {
       setTestLog([...testLog ,lodash.cloneDeep(reactValue)])
@@ -115,17 +118,23 @@ const handleClick = () => {
 
   return (
     <>
-      <div id ="importForm">
-        <div id="importFormButton">
-            <h3>localhost app</h3>
-            <input type="text" value={textValue} onChange={handleChange} />
-            <button type="button" onClick={handleSubmit}> Load </button>
-            <button type="button" onClick={handleClick}> Update </button>
-        </div>
-          <iframe id="frameId" src={iframeValue} ></iframe>
+    
+<div id ="importForm">
+  <div id="importFormButton">
+      <h3>localhost app</h3>
+      <div id="dash">
+      <form noValidate autoComplete="off">
+      <TextField id="standard-basic" value={textValue} label='App address' onChange={handleChange}  />
+      </form>
+      
+      <Button variant="contained" color="primary"onClick={handleSubmit}> Load </Button>
+      <Button variant="contained" color="primary" onClick={handleClick}> Update</Button>
       </div>
+  </div>
+    <iframe id="frameId" src={iframeValue} ></iframe>
+</div>
     </>
-  )
+)
 }
 
 export default ImportForm

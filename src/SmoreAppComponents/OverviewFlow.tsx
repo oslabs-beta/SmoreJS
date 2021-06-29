@@ -17,7 +17,7 @@ import * as d3 from 'd3';
 import initialElements from '../initial-elements';
 
 const onLoad = (reactFlowInstance) => {
-  console.log('flow loaded:', reactFlowInstance);
+  // console.log('flow loaded:', reactFlowInstance);
   reactFlowInstance.fitView();
 };
 
