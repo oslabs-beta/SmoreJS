@@ -73,3 +73,29 @@ h2 {
   margin-top: -135px;
 }
 /* data */
+
+#atoms {
+  display: flex;
+  flex-direction: column;
+
+  padding: 30px;
+  align-content: space-around;
+  border-style: dotted;
+  text-align: left;
+}
+
+#atomDiv {
+  color: rgb(7, 167, 159);
+  border-style: dotted;
+  border-color: rgb(7, 167, 159);
+  padding: 25px;
+}
+#atomDiv H3 {
+  color: rgb(7, 167, 159);
+}
+#selectorDiv {
+  color: rgb(12, 79, 223);
+  border-style: dotted;
+  border-color: rgb(12, 79, 223);
+  padding: 25px;
+}

@@ -1,0 +1,13 @@
+what do we need in our database?
+
+User Info
+  - user_id?
+  - username
+  - password
+  
+
+logs
+  - id
+  - user_id
+  - dataName
+  - data 

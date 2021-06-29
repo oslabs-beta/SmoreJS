@@ -1,34 +1,56 @@
-import {useRecoilValue} from 'recoil';
-import lodash from 'lodash';
+import lodash from 'lodash'
 
-// return Fiber Data Object
-export const getFiberRoot = () => {
-  const iFrame: HTMLElement | null = document.getElementById('frameId');
-  const root = iFrame?.contentDocument.getElementById('root');
-  const fiberData = lodash.cloneDeep(root?._reactRootContainer._internalRoot.current);
-  console.log('Data Source', fiberData);
-  return fiberData;
-};
+export const getNodes = ((node: any) => {
+  // recursive algorithm to get all nodes
+  let currentNode = node?.child;
+  const nodeObj = {
+    id: node?._debugID,
+    tag: node?.tag,
+    children: [],
+    name: '',
+    recoilNode: getRecoilStateData(node),
+  };
+  while (currentNode) { // get all node names
+    if (node?.elementType && node?.elementType.name) {
+      nodeObj.name = node?.elementType?.name;
+    }
+// get all children and siblings
+    nodeObj.children.push(getNodes(currentNode));
+    currentNode = currentNode.sibling;
+  }
+  // return node object
+  // console.log('nodeObj', nodeObj)
+  return nodeObj; 
+});
 
+type cache = {
+  atomSelector: any[],
+  changes: any,
+} 
 
-
-const getRecoilStateData = (node): any => {
-  const cache: any = [];
-  //checks tags to see what kind of React component it is
+const getRecoilStateData = (node: any) => {
+  // const [recoilValue, setRecoil] = useRecoilState(atoms.recoilState);
+  const cache: cache = {
+    atomSelector: [],
+    changes: {}
+  };
   if (node.tag === 0 ||  node.tag === 1) {
     let findingDeps: boolean = true;
     let curMemoizedNode = node.memoizedState?.memoizedState
     
-
     if(curMemoizedNode) {
-      console.log('curMemoizedNode', curMemoizedNode)
-      console.log('node', node)
-
+      console.log('curNode', curMemoizedNode, node)
       while (findingDeps) {
         if(curMemoizedNode.deps) {
           if (curMemoizedNode.deps[1].key) {
-            cache.push(curMemoizedNode.deps[1]);
-            findingDeps = false;
+            if(cache.atomSelector.includes(curMemoizedNode.deps[1])) {
+              // setRecoil(curMemoizedNode.deps[2].current.getState());
+              findingDeps = false;
+            }
+            else {
+              cache.atomSelector.push(curMemoizedNode.deps[1]);
+              cache.changes = lodash.cloneDeep(curMemoizedNode.deps[2].current.getState());
+            }
           }
         }
         if (curMemoizedNode.next) {
@@ -44,33 +66,15 @@ const getRecoilStateData = (node): any => {
   return cache;
 }
 
-
-
-export const getNodes = (node: any) => {
-  const nodeObj = {
-    id: node?._debugID,
-    tag: node?.tag,
-    children: [],
-    name: '',
-    recoilNode: getRecoilStateData(node),
-  };
-  // recursive algorithm to get all nodes
-  let currentNode = node?.child;
-  while (currentNode) { // get all node names
-    if (node?.elementType && node?.elementType.name) {
-      nodeObj.name = node?.elementType?.name;
-    }
-// get all children and siblings
-    nodeObj.children.push(getNodes(currentNode));
-    currentNode = currentNode.sibling;
-  }
-  // return node object
-  // console.log('nodeObj', nodeObj)
-  return nodeObj; 
+// return Fiber Root Object
+export const getFiberRoot = () => {
+  const iFrame: HTMLElement | null = document.getElementById('frameId');
+  const root = iFrame?.contentDocument.getElementById('root');
+  const fiberData = lodash.cloneDeep(root?._reactRootContainer._internalRoot.current);
+  console.log('from fiberparsing', fiberData);
+  const fiberParsedData = getNodes(fiberData);
+  return fiberParsedData;
 };
-
-
-
    
 //checking if child is in parent
 export const checkChild = ( child: any, parent: any, boolean = [false] ) => {
@@ -99,41 +103,25 @@ export const checkChild = ( child: any, parent: any, boolean = [false] ) => {
     })
   }
   return boolean[0];
-}
+};
 
-export const whereIsWaldo = (node, found = []) => {
-const waldo = '[LL^-Ej*N]SU2&M3[j}2QZ2k'
+export const getRecoilData = (node: any) => {
+  let recoilData: any;
 
-if (Array.isArray(node)){
-  console.log('entered node is an array')
-  for (let i = 0; i< node.length; i +=1){
-    if (node[i] === 'waldo'){
-      found.push('FOUND WALDO!')
-      return found
-    }
-    if (typeof node[i] === 'object') {
-      whereIsWaldo(node[i], found);
-
-    }
+  const lookingForData = (curNode: any) => {
+    curNode.forEach(el => {
+      if(el.recoilNode.changes.currentTree) {
+        recoilData = el.recoilNode.changes
+      }
+      else if(el.children) {
+        lookingForData(el.children)
+      }
+    })
+    return;
   }
+  lookingForData(node.children);
+
+  return recoilData;
 }
-
-
-if (typeof node === 'object' && node !== null){
-  // console.log('entered node is an object')
-  for (let k in node){
-    if(k !== 'return' && k !== 'next' && 'alternate'){
-    if (k === 'waldo'){
-      found.push('FOUND WALDO!')
-      return found
-    }
-    if (typeof node[k] === 'object') {
-      whereIsWaldo(node[k], found);
-    }}}}
-
-return found}
-
-
-
 
 
