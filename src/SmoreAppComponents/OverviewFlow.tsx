@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ReactFlow, {
   removeElements,
@@ -13,7 +13,6 @@ import {elements} from '../types';
 import {useRecoilValue, useRecoilState} from 'recoil'
 import { checkChild, createNewObj } from '../FiberParsingAlgo.tsx';
 import atoms from '../atoms';
-
 
 const AtomDisplay : FunctionComponent = (props) => {
   return (
@@ -31,10 +30,10 @@ const SelectorDisplay : FunctionComponent = (props) => {
   )
 }
 
-const onLoad = (reactFlowInstance) => {
-  // console.log('flow loaded:', reactFlowInstance);
-  reactFlowInstance.fitView();
-};
+// const onLoad = (reactFlowInstance) => {
+//   // console.log('flow loaded:', reactFlowInstance);
+//   reactFlowInstance.fitView();
+// };
 
 
 const OverviewFlow = () => {
@@ -297,4 +296,3 @@ const OverviewFlow = () => {
 };
 
 export default OverviewFlow;
-
