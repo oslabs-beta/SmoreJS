@@ -151,7 +151,7 @@ const OverviewFlow = () => {
   if(components) {
     linkingTree(components);
   }    
-  
+  console.log(components);
   useEffect(() => {
     // setRecoil(recoilObject);
     setElements( components)

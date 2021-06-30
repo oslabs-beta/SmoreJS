@@ -3,6 +3,7 @@ import AppHeader from '../Headers/AppHeader.tsx';
 import ImportForm from '../SmoreAppComponents/ImportForm.tsx';
 import OverviewFlow from '../SmoreAppComponents/OverviewFlow.tsx';
 import StateDisplay from '../SmoreAppComponents/StateDisplay.tsx';
+import StateData from '../SmoreAppComponents/StateData';
 
 const AppContainer: FunctionComponent = (props: any) => {
   return (
@@ -12,6 +13,7 @@ const AppContainer: FunctionComponent = (props: any) => {
         <ImportForm />
         <OverviewFlow />
       </div>
+      <StateData />
       <StateDisplay/>
     </>
   )

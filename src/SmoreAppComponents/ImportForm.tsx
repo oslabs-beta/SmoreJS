@@ -17,69 +17,69 @@ const ImportForm : FunctionComponent = ({}) =>{
   const iframeValue = useRecoilValue(atoms.iframeState)
   const [testLog, setTestLog]: any[] = useRecoilState(atoms.recoilLog);
   const [reactValue, setReactValue] = useRecoilState(atoms.reactState);
-  
-function handleSubmit(){
-  setIframe(text);
-}
+  const [recoilObject, setRecoilObject] = useRecoilState(atoms.recoilObj)
 
-const handleChange = (e: object) =>{
-  setText(e.target.value)
-}
-
-type atomSelectorValuesNonDefault = {
-  edit: number,
-  key: string,
-  values: any,
-  updated: boolean,
-  isAtom: boolean,
-  isSelector: boolean,
-}
-
-type recoilObj = {
-  version: number,
-  stateID: number,
-  dirtyAtoms: any[],
-  currentEdit: number,
-  knownAtoms: any[],
-  knownSelectors: any[],
-  atomSelectorValuesNonDefault: any[],
-}
-
-const setIterator = (setObj: any ) => {
-  const result: any[] = []
-  setObj.forEach(el => {
-    result.push(el);
-  })
-  return result;
-}
-
-const getAtomSelectorValues = (children: any, recoilObj) => {
-  function updated(childName: any){
-    if (recoilObj.currentEdit === childName) return true;
-    return false
+  function handleSubmit(){
+    setIframe(text);
   }
-  function isAtom (childName: any){
-    if (recoilObj.knownAtoms.includes(childName)) return true;
-    return false
+
+  const handleChange = (e: object) =>{
+    setText(e.target.value)
   }
-  function isSelector (childName: any){
-    if (recoilObj.knownSelectors.includes(childName)) return true;
-    return false
+
+  type atomSelectorValuesNonDefault = {
+    edit: number,
+    key: string,
+    values: any,
+    updated: boolean,
+    isAtom: boolean,
+    isSelector: boolean,
   }
+
+  type recoilObj = {
+    version: number,
+    stateID: number,
+    dirtyAtoms: any[],
+    currentEdit: number,
+    knownAtoms: any[],
+    knownSelectors: any[],
+    atomSelectorValuesNonDefault: any[],
+  }
+
+  const setIterator = (setObj: any ) => {
+    const result: any[] = []
+    setObj.forEach(el => {
+      result.push(el);
+    })
+    return result;
+  }
+
+  const getAtomSelectorValues = (children: any, recoilObj) => {
+    function updated(childName: any){
+      if (recoilObj.currentEdit === childName) return true;
+      return false
+    }
+    function isAtom (childName: any){
+      if (recoilObj.knownAtoms.includes(childName)) return true;
+      return false
+    }
+    function isSelector (childName: any){
+      if (recoilObj.knownSelectors.includes(childName)) return true;
+      return false
+    }
 
   //declaring the results arr
   const result : any[] = [];
   //iterate over the children
   for (let i = 0; i < children.length; i += 1){
     const child: atomSelectorValuesNonDefault = {
-      edit: children[i].edit,
-      key: children[i].key,
-      values: children[i].value.contents,
-      updated: updated(children[i].edit),
-      isAtom: isAtom(children[i].key),
-      isSelector: isSelector(children[i].key),
+      edit: children[i]?.edit,
+      key: children[i]?.key,
+      values: children[i].value?.contents,
+      updated: updated(children[i]?.edit),
+      isAtom: isAtom(children[i]?.key),
+      isSelector: isSelector(children[i]?.key),
     }
-
     result.push(child);
   }
   return result;
@@ -87,32 +87,28 @@ const getAtomSelectorValues = (children: any, recoilObj) => {
 
 const handleClick = () => {
   const checkRecoil: any = getFiberRoot();
+  console.log(checkRecoil)
   if (JSON.stringify(checkRecoil) !== JSON.stringify(reactValue)) {
     const currentRecoilData = getRecoilData(checkRecoil); // --> currentRecoil Data
     const recoilObj: recoilObj = {
       version: currentRecoilData.currentTree.version,
       stateID: currentRecoilData.currentTree.stateID,
       dirtyAtoms: setIterator(currentRecoilData.currentTree.dirtyAtoms),
-      currentEdit: currentRecoilData.currentTree.atomValues._hamt._edit,
+      currentEdit: currentRecoilData.currentTree.atomValues._hamt?._edit,
       knownAtoms: setIterator(currentRecoilData.knownAtoms),
       knownSelectors: setIterator(currentRecoilData.knownSelectors),
       atomSelectorValuesNonDefault: [],
     }
-    console.log('101', recoilObj);
+    // console.log(typeof currentRecoilData.currentTree.atomValues);
     recoilObj.atomSelectorValuesNonDefault = getAtomSelectorValues(currentRecoilData.currentTree.atomValues._hamt._root.children, recoilObj)
-
-    if (testLog[0]) {
-      setTestLog([...testLog ,lodash.cloneDeep(reactValue)])
-    }
-    else {
-      setTestLog([reactValue])
-    }
-    console.log('recoil', checkRecoil);
-    // console.log('testlog', recoilObj);
+    
+    testLog[0] ? setTestLog([...testLog ,recoilObj]) : setTestLog([recoilObj])
+    
+    // recoilObj.atomSelectorValuesNonDefault.forEach(el => {
+    setRecoilObject(recoilObj);
     setReactValue(checkRecoil);
   }
 }
-
   return (
     <>
       <div id ="importForm">

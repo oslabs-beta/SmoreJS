@@ -36,10 +36,12 @@ const getRecoilStateData = (node: any) => {
   };
   if (node.tag === 0 ||  node.tag === 1) {
     let findingDeps: boolean = true;
+    let findingDepsPartTwo: boolean = true;
     let curMemoizedNode = node.memoizedState?.memoizedState
+    let curMemoNode = node.memoizedState;
     
     if(curMemoizedNode) {
-      console.log('curNode', curMemoizedNode, node)
+      // console.log('curNode', curMemoizedNode, node)
       while (findingDeps) {
         if(curMemoizedNode.deps) {
           if (curMemoizedNode.deps[1].key) {
@@ -60,7 +62,30 @@ const getRecoilStateData = (node: any) => {
           break;
         }
       }
-
+    }
+    if(curMemoNode) {
+      while (findingDepsPartTwo) {
+        if(curMemoNode.memoizedState) {
+          if (curMemoNode.memoizedState.current) {
+            if(curMemoNode.memoizedState.current.getState) {
+              console.log('hi')
+             
+                // setRecoil(curMemoizedNode.deps[2].current.getState());
+                console.log(curMemoNode.memoizedState.current.getState());
+                // cache.atomSelector.push(curMemoizedNode.deps[1]);
+                cache.changes = lodash.cloneDeep(curMemoNode.memoizedState.current.getState());
+                findingDepsPartTwo = false;
+              
+            }
+          }
+        }
+        if (curMemoNode.next) {
+          curMemoNode = curMemoNode.next;
+        }
+        else {
+          break;
+        }
+      }
     }
   }
   return cache;
@@ -73,6 +98,7 @@ export const getFiberRoot = () => {
   const fiberData = lodash.cloneDeep(root?._reactRootContainer._internalRoot.current);
   console.log('from fiberparsing', fiberData);
   const fiberParsedData = getNodes(fiberData);
+  console.log('test', fiberParsedData)
   return fiberParsedData;
 };
    

@@ -11,7 +11,6 @@ atoms.iframeState = atom({
   default: ''
 });
 
-
 atoms.reactState = atom({
   key: 'reactState',
   default: {},
@@ -21,5 +20,15 @@ atoms.recoilLog = atom({
   key: 'recoilLog',
   default: [],
 });
+
+atoms.recoilObj = atom({
+  key: 'recoilObj',
+  default : {},
+})
+
+atoms.testLog = atom({
+  key: 'testLog',
+  default: "",
+})
 
 export default atoms
