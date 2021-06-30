@@ -1,5 +1,15 @@
 import lodash from 'lodash'
 
+export const createNewObj = (arr: any[]) => {
+  const result: any[] = [];
+  arr.forEach(el => {
+    const obj: any = {};
+    obj.key = lodash.cloneDeep(el.key);
+    result.push(obj);
+  })
+  return result;
+}
+
 export const getNodes = ((node: any) => {
   // recursive algorithm to get all nodes
   let currentNode = node?.child;

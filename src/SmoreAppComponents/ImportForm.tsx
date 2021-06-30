@@ -18,8 +18,8 @@ const ImportForm : FunctionComponent = ({}) =>{
   const iframeValue = useRecoilValue(atoms.iframeState)
   const [testLog, setTestLog]: any[] = useRecoilState(atoms.recoilLog);
   const [reactValue, setReactValue] = useRecoilState(atoms.reactState);
-  const [recoilObjValue, setRecoilObjValue] = useRecoilState(atoms.recoilObj)
-  
+  const [recoilObject, setRecoilObject] = useRecoilState(atoms.recoilObj);
+
 function handleSubmit(){
   setIframe(text);
 }
@@ -102,7 +102,6 @@ const handleClick = () => {
     }
     console.log('101', recoilObj);
     recoilObj.atomSelectorValuesNonDefault = getAtomSelectorValues(currentRecoilData.currentTree.atomValues._hamt._root.children, recoilObj)
-    setRecoilObjValue(recoilObj)
 
     if (testLog[0]) {
       setTestLog([...testLog ,lodash.cloneDeep(reactValue)])
@@ -111,7 +110,9 @@ const handleClick = () => {
       setTestLog([reactValue])
     }
     console.log('recoil', checkRecoil);
-    // console.log('testlog', recoilObj);
+    console.log('testlog', recoilObj);
+
+    setRecoilObject(recoilObj);
     setReactValue(checkRecoil);
   }
 }

@@ -1,11 +1,15 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import React, { FunctionComponent, useEffect, useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useRecoilState } from 'recoil';
+import atoms from '../atoms'
 
 const Login: FunctionComponent = (props: any) => {
 
   let history = useHistory();
 
+
   const [loginSuccess, setLogin] = useState(false);
+  const [user, setUser] = useRecoilState(atoms.currentUser)
 
   useEffect(() => {
     console.log('loggedin', loginSuccess);
@@ -30,6 +34,8 @@ const Login: FunctionComponent = (props: any) => {
       .then(data => {
         console.log('login data', data);
         setLogin(data['logged in']);
+        setUser(data['user'])
+        console.log(user)
       })
       .catch(err => console.log('login err', err))
   }

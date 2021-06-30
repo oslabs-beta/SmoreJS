@@ -15,11 +15,6 @@ app.get('/', ( req: any, res: any ) => {
 // Organize all endpoint routes from electron API's
 app.use('/electron', electronRouter);
 
-// app.get('/electron', ( req: any, res: any ) => {
-//   console.log('BRAIN');
-//   res.send({"queen of ktown": 5});
-// })
-
 // 404 handler
 app.use((req: any,res: any) => {
   res.status(404).send('Not Found');
