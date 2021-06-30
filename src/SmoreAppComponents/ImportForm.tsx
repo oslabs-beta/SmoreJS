@@ -6,7 +6,8 @@ import {
   useRecoilValue,
   useSetRecoilState
 } from 'recoil';
-
+import {TextField, Button} from '@material-ui/core/';
+import 'typeface-roboto'
 import atoms from '../atoms';
 import { getFiberRoot, getRecoilData } from '../FiberParsingAlgo.tsx';
 
@@ -118,17 +119,23 @@ const handleClick = () => {
 
   return (
     <>
-      <div id ="importForm">
-        <div id="importFormButton">
-            <h3>localhost app</h3>
-            <input type="text" value={textValue} onChange={handleChange} />
-            <button type="button" onClick={handleSubmit}> Load </button>
-            <button type="button" onClick={handleClick}> Update </button>
-        </div>
-          <iframe id="frameId" src={iframeValue} ></iframe>
+    
+<div id ="importForm">
+  <div id="importFormButton">
+      <h3>localhost app</h3>
+      <div id="dash">
+      <form noValidate autoComplete="off">
+      <TextField id="standard-basic" value={textValue} label='App address' onChange={handleChange}  />
+      </form>
+      
+      <Button variant="contained" color="primary"onClick={handleSubmit}> Load </Button>
+      <Button variant="contained" color="primary" onClick={handleClick}> Update</Button>
       </div>
+  </div>
+    <iframe id="frameId" src={iframeValue} ></iframe>
+</div>
     </>
-  )
+)
 }
 
 export default ImportForm

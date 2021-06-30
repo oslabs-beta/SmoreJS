@@ -14,10 +14,6 @@ import {useRecoilValue, useRecoilState} from 'recoil'
 import { checkChild, createNewObj } from '../FiberParsingAlgo.tsx';
 import atoms from '../atoms';
 
-// const onLoad = (reactFlowInstance) => {
-//   console.log('flow loaded:', reactFlowInstance);
-//   reactFlowInstance.fitView();
-// }; 
 
 const AtomDisplay : FunctionComponent = (props) => {
   return (
@@ -35,6 +31,10 @@ const SelectorDisplay : FunctionComponent = (props) => {
   )
 }
 
+const onLoad = (reactFlowInstance) => {
+  // console.log('flow loaded:', reactFlowInstance);
+  reactFlowInstance.fitView();
+};
 
 
 const OverviewFlow = () => {

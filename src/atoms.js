@@ -23,6 +23,7 @@ atoms.recoilLog = atom({
 
 atoms.recoilObj = atom({
   key: 'recoilObj',
+
   default: {},
 });
 
