@@ -11,18 +11,18 @@ import ReactFlow, {
 import dagre from 'dagre';
 import {elements} from '../types';
 import {useRecoilValue, useRecoilState} from 'recoil'
-import { getNodes, checkChild } from '../FiberParsingAlgo.tsx';
+import { checkChild, createNewObj } from '../FiberParsingAlgo.tsx';
 import atoms from '../atoms';
 
-const onLoad = (reactFlowInstance) => {
-  console.log('flow loaded:', reactFlowInstance);
-  reactFlowInstance.fitView();
-};
+// const onLoad = (reactFlowInstance) => {
+//   console.log('flow loaded:', reactFlowInstance);
+//   reactFlowInstance.fitView();
+// }; 
 
 const AtomDisplay : FunctionComponent = (props) => {
   return (
     <div>
-      <button onClick={props.getAtomToHighlight}>{props.atom}</button>
+      <button value={props.atom} onClick={props.getAtomToHighlight}>{props.atom}</button>
     </div>
   )
 }
@@ -30,17 +30,17 @@ const AtomDisplay : FunctionComponent = (props) => {
 const SelectorDisplay : FunctionComponent = (props) => {
   return (
     <div>
-      <button onClick={props.getSelectorToHighlight}>{props.selector}</button>
+      <button value={props.selector} onClick={props.getSelectorToHighlight}>{props.selector}</button>
     </div>
   )
 }
+
+
 
 const OverviewFlow = () => {
   const nodeData =  useRecoilValue(atoms.reactState)
   const logData = useRecoilValue(atoms.recoilObj)
   const [elements, setElements] = useState([]);
-  const [atomNodeBg, setAtomNodeBg] = useState('#fff');
-  const [selectorNodeBg, setSelectorNodeBg] = useState('#fff');
   const onElementsRemove = (elementsToRemove: any) => setElements((els: any) => removeElements(elementsToRemove, els));
   const onConnect = (params: any) => setElements((els: any) => addEdge(params, els));
   const flowStyles = { width: '100%', height: 700 };
@@ -51,7 +51,7 @@ const OverviewFlow = () => {
         if (obj.recoilNode.atomSelector[0]) {
           const objOfRecoilStates: any = {};
           objOfRecoilStates.component= obj.name;
-          objOfRecoilStates.recoilState = obj.recoilNode.atomSelector;
+          objOfRecoilStates.recoilState = createNewObj(obj.recoilNode.atomSelector);
           components.push(objOfRecoilStates)
         }
       }
@@ -61,48 +61,60 @@ const OverviewFlow = () => {
   }
 
   const subscriptions = getSubscriptions([nodeData]);
-  console.log(subscriptions)
-
-
-  const [atomToHighlight, setAtomToHighlight] = useState('')
-  const [selectorToHighlight, setSelectorToHighlight] = useState('')
+  console.log(logData);
   
+  for (let i = 0; i < subscriptions.length; i += 1) {
+    for (let j = 0; j < subscriptions[i].recoilState.length; j += 1) {
+      const curAtomSelectorObject = subscriptions[i].recoilState[j]
+      if (!curAtomSelectorObject.hasOwnProperty('updated')) {
+        curAtomSelectorObject.updated = false;
+      }
+      if (logData.knownAtoms.includes(curAtomSelectorObject.key)) {
+        curAtomSelectorObject.isAtom = true;
+      }
+      if (logData.knownSelectors.includes(curAtomSelectorObject.key)) {
+        curAtomSelectorObject.isSelector = true;
+      }
+      logData.atomSelectorValuesNonDefault.forEach(el => {
+        if(curAtomSelectorObject.key === el.key && el.updated) {
+          curAtomSelectorObject.updated = true;
+        }
+      })
+    }
+  }
+  
+  console.log(subscriptions);
+
   const getAtomToHighlight = (e: any) => {
-    subscriptions.forEach(el => {
-      if(e.target.innerHTML===el.recoilState[0].key){
-        setAtomToHighlight(el.component);
-        setAtomNodeBg('#c6a375');
+    subscriptions.forEach(obj => {
+      if(e.target.value===obj.recoilState[0].key){
         setElements((els) =>
           els.map((el) => {
-            if (el.data?.label===atomToHighlight){
-              el.style.background = atomNodeBg;
-            }
+            if (el.data?.label===obj.component){
+              if (el.style?.background)
+              el.style.background = '#EBDEF0';
+            } 
           return el;
           })
         );
       }
-      console.log(atomToHighlight);
-     });
-     
+    });
   }
 
   const getSelectorToHighlight = (e: any) => {
-    subscriptions.forEach(el => {
-      if(e.target.innerHTML===el.recoilState[0].key){
-        setSelectorToHighlight(el.component);
-        setSelectorNodeBg('#965f34')
+    subscriptions.forEach(obj => {
+      if(e.target.value===obj.recoilState[0].key){
         setElements((els) =>
           els.map((el) => {
-            if (el.data?.label===selectorToHighlight){
-              el.style.background = selectorNodeBg;
-            }
+            if (el.data?.label===obj.component){
+              if (el.style?.background)
+              el.style.background = '#FADBD8';
+            } 
           return el;
           })
         );
       }
-      console.log(selectorToHighlight);
-     });
-     
+    });
   }
 
   function getNamedComponents(arr, arrayOfElements: any = [], numOfComponents: any = [0]) {
@@ -115,7 +127,7 @@ const OverviewFlow = () => {
           data: {},
           position: {},
           children: [],
-          style: {},
+          style: {background: '#fff'},
         };
         
         newElements.type = 'input';
@@ -177,9 +189,9 @@ const OverviewFlow = () => {
   
   const getLayoutedElements = (elements, direction = 'TB') => {
     dagreGraph.setGraph({ rankdir: direction });
-  
     elements.forEach((el) => {
       if (isNode(el)) {
+        
         dagreGraph.setNode(el.id, { width: nodeWidth, height: nodeHeight });
       } else {
         dagreGraph.setEdge(el.source, el.target);
@@ -208,9 +220,10 @@ const OverviewFlow = () => {
   
   
   useEffect(() => {
-    setElements(layoutedElements)
+    setElements(layoutedElements) 
   }, [nodeData]);
-
+  
+  
   // useEffect(() => {
   //   setElements((els) =>
   //     els.map((el) => {
@@ -252,22 +265,19 @@ const OverviewFlow = () => {
       elements={elements}
       onElementsRemove={onElementsRemove}
       onConnect={onConnect}
-      onLoad={onLoad}
+      // onLoad={onLoad}
       snapToGrid
       snapGrid={[15, 15]}
       style={flowStyles}
     >
       <MiniMap
         nodeStrokeColor={(n: any) => {
-          if (n.style?.background)
-            return n.style.background;
           if (n.type === 'input')
             return '#0041d0';
           if (n.type === 'output')
             return '#ff0072';
           if (n.type === 'default')
             return '#1a192b';
-
           return '#eee';
         } }
         nodeColor={(n: any) => {
