@@ -7,6 +7,7 @@ import {
 import atoms from '../atoms';
 import { getNodes, checkChild } from '../FiberParsingAlgo.tsx';
 
+<<<<<<< HEAD
 const State : FunctionComponent = (props: any) => {
   
   //stringify array passed from props
@@ -30,6 +31,38 @@ const State : FunctionComponent = (props: any) => {
 const StateDisplay : FunctionComponent = ({}) =>{
   const testing = useRecoilValue(atoms.recoilLog);
   console.log('state', testing);
+=======
+const State : FunctionComponent = (props: any) => {
+//stringify array passed from props
+const recoilObj = useRecoilValue(atoms.recoilObj)
+const arrToString = (arr: any[]) => {
+  let result: string = "";
+  for (let i = 0; i < arr.length; i += 1) {
+    let el = arr[i]
+    if(recoilObj.knownAtoms.includes(arr[i])){
+       el  = 'Atom: ' + arr[i];
+    }
+    if(recoilObj.knownSelectors.includes(arr[i])){
+      el  = 'Selector: ' + arr[i];
+   }
+
+    if( i === 0 ){
+      
+      result = el
+    } 
+    else if(i === arr.length - 1) result += ", and " + el;
+    else result += ", " + el;
+  }
+  return result;
+}
+return (
+  <div>
+    Component {props.component} is subscribed to {arrToString(props.atom)}
+  </div>
+)
+}
+  const StateDisplay : FunctionComponent = ({}) =>{
+>>>>>>> main
   const reactData = useRecoilValue(atoms.reactState)
   const recoilObj = useRecoilValue(atoms.recoilObj)
 // const getReact = getNodes(reactData);
@@ -62,6 +95,12 @@ const StateDisplay : FunctionComponent = ({}) =>{
     })
     displayData.push(<State component={recoilState[i].component} atom={currentAtoms} key={i} />)
   }
+<<<<<<< HEAD
+=======
+  console.log('recoilObj', recoilObj)
+//new Code
+
+>>>>>>> main
   function hasVersion(property, str){
     if (property) return 'Virtual Dom has Been updated ' + property + ' time(s)'; 
     return str }
@@ -70,13 +109,20 @@ const StateDisplay : FunctionComponent = ({}) =>{
     if (property?.length) return property.map((el) => el + ', '); 
     return str }
 
+<<<<<<< HEAD
   function hasRecoilObjs(property, str){
     if (property?.length) return atomDiv(property)
     return str }
+=======
+    function hasRecoilObjs(property, str){
+      if (property?.length) return atomDiv(property)
+      return str }
+>>>>>>> main
   
   function atomDiv(arr){
     const display = []
     
+<<<<<<< HEAD
     for (let i = 0; i < arr.length; i += 1){
       const {edit, key, updated, isAtom, isSelector} = arr[i]
       let {values} = arr[i]
@@ -110,6 +156,55 @@ const StateDisplay : FunctionComponent = ({}) =>{
         </div>
       )
     }
+=======
+   
+    for (let i = 0; i < arr.length; i += 1){
+      const {edit, key, updated, isAtom, isSelector} = arr[i]
+      let {values} = arr[i]
+      values = ifValuesIsObject(values)
+      function ifValuesIsObject(values: any){
+        if(typeof values === 'object'){
+          const info = []
+          for (const [keyv, valuev] of Object.entries(values) ){
+            if(typeof valuev === 'object'){
+                return ifValuesIsObject(valuev)
+            }
+  
+          const text = `${keyv} : ${valuev}`
+          text.replace(/$/g, '')
+          
+           info.push( 
+           <div key={i +' values'}>
+               {text}
+             </div>
+            ) 
+          }
+          return info;
+        }
+        return values;
+      }
+      
+      const divId = isAtom? 'atomDiv' : 'selectorDiv';
+      
+        display.push(
+          <div id={divId} key={i}>
+            <h3>{key}</h3>
+            <br/>
+            Updated on render: {edit}
+            <br/>
+            updated:  {`${updated}`}
+            <br/>
+            isAtom: {`${isAtom}`}
+            <br/>
+            isSelector: {`${isSelector}`}
+           
+            <br/>
+            value(s): {values}
+          </div>
+        )
+      }
+    
+>>>>>>> main
     return display;
   }
   
@@ -139,6 +234,11 @@ const StateDisplay : FunctionComponent = ({}) =>{
           Selectors: {knownSelectors}
           <br/>
          Atom/Selector Values:
+<<<<<<< HEAD
+=======
+         <br/>
+         <br/>
+>>>>>>> main
          {valuesNonDefault}
         </div>
       </div>

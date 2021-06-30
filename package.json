@@ -37,6 +37,7 @@
     "@babel/preset-typescript": "^7.9.0",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@fontsource/roboto": "^4.4.5",
     "@material-ui/core": "^5.0.0-alpha.36",
     "@material-ui/styles": "^5.0.0-alpha.35",
     "@types/react": "^16.14.8",
@@ -58,6 +59,7 @@
     "bcryptjs": "^2.4.3",
     "css-loader": "^5.2.6",
     "d3": "^7.0.0",
+    "dagre": "^0.8.5",
     "file-loader": "^6.2.0",
     "git": "^0.1.5",
     "lodash": "^4.17.21",
@@ -68,6 +70,7 @@
     "react-router-dom": "^5.2.0",
     "recoil": "^0.3.1",
     "style-loader": "^2.0.0",
+    "typeface-roboto": "^1.1.13",
     "url-loader": "^4.1.1"
   }
 }

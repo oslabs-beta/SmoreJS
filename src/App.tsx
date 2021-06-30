@@ -13,6 +13,7 @@ document.body.appendChild(mainElement);
 
 const App = () => {
 
+  
   const handleClick = () => {
     fetch('http://localhost:3003/electron')
       .then(res => {return res.json()})
@@ -20,14 +21,15 @@ const App = () => {
       .catch(err => console.log('err', err))
   };
 
+
   return (
     <HashRouter>
       <RecoilRoot>
-        <div className="menu">
+        {/* <div className="menu">
           <Link to="/"><h2>Login</h2></Link>
           <Link to="/signup"><h2>SignUp</h2></Link>
           <Link to="/app"><h2>Application</h2></Link>
-        </div>
+        </div> */}
         <Switch>
           <Route exact path="/" component={LoginContainer} />
           <Route exact path="/signup" component={SignupContainer} />

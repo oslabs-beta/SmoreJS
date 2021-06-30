@@ -6,7 +6,8 @@ import {
   useRecoilValue,
   useSetRecoilState
 } from 'recoil';
-
+import {TextField, Button} from '@material-ui/core/';
+import 'typeface-roboto'
 import atoms from '../atoms';
 import { getFiberRoot, getRecoilData } from '../FiberParsingAlgo.tsx';
 
@@ -17,7 +18,19 @@ const ImportForm : FunctionComponent = ({}) =>{
   const iframeValue = useRecoilValue(atoms.iframeState)
   const [testLog, setTestLog]: any[] = useRecoilState(atoms.recoilLog);
   const [reactValue, setReactValue] = useRecoilState(atoms.reactState);
+<<<<<<< HEAD
   const [recoilObject, setRecoilObject] = useRecoilState(atoms.recoilObj)
+=======
+  const [recoilObject, setRecoilObject] = useRecoilState(atoms.recoilObj);
+
+function handleSubmit(){
+  setIframe(text);
+}
+
+const handleChange = (e: object) =>{
+  setText(e.target.value)
+}
+>>>>>>> main
 
   function handleSubmit(){
     setIframe(text);
@@ -101,27 +114,46 @@ const handleClick = () => {
     }
     // console.log(typeof currentRecoilData.currentTree.atomValues);
     recoilObj.atomSelectorValuesNonDefault = getAtomSelectorValues(currentRecoilData.currentTree.atomValues._hamt._root.children, recoilObj)
+<<<<<<< HEAD
     
     testLog[0] ? setTestLog([...testLog ,recoilObj]) : setTestLog([recoilObj])
     
     // recoilObj.atomSelectorValuesNonDefault.forEach(el => {
+=======
+
+    if (testLog[0]) {
+      setTestLog([...testLog ,lodash.cloneDeep(reactValue)])
+    }
+    else {
+      setTestLog([reactValue])
+    }
+    console.log('recoil', checkRecoil);
+    console.log('testlog', recoilObj);
+
+>>>>>>> main
     setRecoilObject(recoilObj);
     setReactValue(checkRecoil);
   }
 }
   return (
     <>
-      <div id ="importForm">
-        <div id="importFormButton">
-            <h3>localhost app</h3>
-            <input type="text" value={textValue} onChange={handleChange} />
-            <button type="button" onClick={handleSubmit}> Load </button>
-            <button type="button" onClick={handleClick}> Update </button>
-        </div>
-          <iframe id="frameId" src={iframeValue} ></iframe>
+    
+<div id ="importForm">
+  <div id="importFormButton">
+      <h3>localhost app</h3>
+      <div id="dash">
+      <form noValidate autoComplete="off">
+      <TextField id="standard-basic" value={textValue} label='App address' onChange={handleChange}  />
+      </form>
+      
+      <Button variant="contained" color="primary"onClick={handleSubmit}> Load </Button>
+      <Button variant="contained" color="primary" onClick={handleClick}> Update</Button>
       </div>
+  </div>
+    <iframe id="frameId" src={iframeValue} ></iframe>
+</div>
     </>
-  )
+)
 }
 
 export default ImportForm
