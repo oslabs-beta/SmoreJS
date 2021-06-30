@@ -7,8 +7,6 @@ import {
 import atoms from '../atoms';
 import { getNodes, checkChild } from '../FiberParsingAlgo.tsx';
 
-
-
 const State : FunctionComponent = (props: any) => {
   
   //stringify array passed from props
@@ -55,7 +53,6 @@ const StateDisplay : FunctionComponent = ({}) =>{
   }
   const displayData: any = [];
   
-
   const recoilState = getRecoilStates([reactData]);
   console.log(recoilState);
   for (let i = 0; i < recoilState.length; i += 1) {
@@ -73,9 +70,9 @@ const StateDisplay : FunctionComponent = ({}) =>{
     if (property?.length) return property.map((el) => el + ', '); 
     return str }
 
-    function hasRecoilObjs(property, str){
-      if (property?.length) return atomDiv(property)
-      return str }
+  function hasRecoilObjs(property, str){
+    if (property?.length) return atomDiv(property)
+    return str }
   
   function atomDiv(arr){
     const display = []
@@ -88,12 +85,10 @@ const StateDisplay : FunctionComponent = ({}) =>{
         for (const [keyv, valuev] of Object.entries(values) ){
         const text = `${keyv} : ${valuev}`
         text.replace(/$/g, '')
-         info.push( 
-          
-          
-          <div key={i +'values'}>
-             {text}
-           </div>
+          info.push( 
+            <div key={i +'values'}>
+              {text}
+            </div>
           ) 
         }
         values = info;
@@ -110,7 +105,6 @@ const StateDisplay : FunctionComponent = ({}) =>{
           isAtom: {`${isAtom}`}
           <br/>
           isSelector: {`${isSelector}`}
-         
           <br/>
           value(s): {values}
         </div>
