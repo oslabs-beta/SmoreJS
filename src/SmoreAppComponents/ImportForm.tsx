@@ -17,7 +17,8 @@ const ImportForm : FunctionComponent = ({}) =>{
   const iframeValue = useRecoilValue(atoms.iframeState)
   const [testLog, setTestLog]: any[] = useRecoilState(atoms.recoilLog);
   const [reactValue, setReactValue] = useRecoilState(atoms.reactState);
-  
+  const [recoilObject, setRecoilObject] = useRecoilState(atoms.recoilObj);
+
 function handleSubmit(){
   setIframe(text);
 }
@@ -108,7 +109,9 @@ const handleClick = () => {
       setTestLog([reactValue])
     }
     console.log('recoil', checkRecoil);
-    // console.log('testlog', recoilObj);
+    console.log('testlog', recoilObj);
+
+    setRecoilObject(recoilObj);
     setReactValue(checkRecoil);
   }
 }

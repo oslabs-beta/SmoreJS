@@ -1,16 +1,15 @@
-import {atom} from 'recoil';
+import { atom } from 'recoil';
 
 const atoms = {};
- atoms.textState = atom({
+atoms.textState = atom({
   key: 'text',
-  default: 'http://localhost:3000'
+  default: 'http://localhost:3000',
 });
 
 atoms.iframeState = atom({
   key: 'iframe',
-  default: ''
+  default: '',
 });
-
 
 atoms.reactState = atom({
   key: 'reactState',
@@ -22,4 +21,14 @@ atoms.recoilLog = atom({
   default: [],
 });
 
-export default atoms
+atoms.recoilObj = atom({
+  key: 'recoilObj',
+  default: {},
+});
+
+atoms.currentUser = atom({
+  key: 'username',
+  default: '',
+});
+
+export default atoms;
