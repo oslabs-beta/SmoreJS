@@ -92,7 +92,7 @@ const StateLog: FunctionComponent = (props: any) => {
   if(loadLogs[0]) {
     loadLogs.forEach((el: any) => {
       const curLog = JSON.parse(el.data);
-      loadingLogs.push(<LoadLog name={el.dataName} log={curLog.log} date={curLog.time} />)
+      loadingLogs.push(<LoadLog name={el.dataName} log={addLineBreaks(curLog.log.toString().replace(/,/g,''))} date={curLog.time} />)
     })
   }
 

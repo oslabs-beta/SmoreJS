@@ -44,7 +44,7 @@ const SignUp: FunctionComponent = (props: any) => {
         </label>
         <br></br>
         <label>
-          <TextField id="signupPassword" label="Password" variant="outlined" className="userInputField"/>
+          <TextField id="signupPassword" type="password" label="Password" variant="outlined" className="userInputField"/>
         </label>
         <br></br>
         <Button variant="contained" color="primary" onClick={handleSubmit}> Sign up </Button>
