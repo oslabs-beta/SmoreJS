@@ -1,5 +1,7 @@
 import lodash from 'lodash'
+import { cache } from './types';
 
+// Deep clone object
 export const createNewObj = (arr: any[]) => {
   const result: any[] = [];
   arr.forEach(el => {
@@ -10,8 +12,8 @@ export const createNewObj = (arr: any[]) => {
   return result;
 }
 
+// Recursive algorithm to get all nodes and assign necessary properties to new object
 export const getNodes = ((node: any) => {
-  // recursive algorithm to get all nodes
   let currentNode = node?.child;
   const nodeObj = {
     id: node?._debugID,
@@ -20,41 +22,45 @@ export const getNodes = ((node: any) => {
     name: '',
     recoilNode: getRecoilStateData(node),
   };
-  while (currentNode) { // get all node names
+  // Get all node names
+  while (currentNode) { 
     if (node?.elementType && node?.elementType.name) {
       nodeObj.name = node?.elementType?.name;
     }
-// get all children and siblings
+    // Get all children and siblings
     nodeObj.children.push(getNodes(currentNode));
     currentNode = currentNode.sibling;
   }
-  // return node object
-  // console.log('nodeObj', nodeObj)
   return nodeObj; 
 });
 
-type cache = {
-  atomSelector: any[],
-  changes: any,
-} 
-
+// Get data specific to recoil
 const getRecoilStateData = (node: any) => {
-  // const [recoilValue, setRecoil] = useRecoilState(atoms.recoilState);
   const cache: cache = {
     atomSelector: [],
     changes: {}
   };
+  
+  /*
+  ** Tag 0: function component
+  ** Tag 1: class component
+  ** A component has recoil state data if within the memoizedState property there is a deps property with an array
+  */
   if (node.tag === 0 ||  node.tag === 1) {
     let findingDeps: boolean = true;
+    let findingDepsPartTwo: boolean = true;
     let curMemoizedNode = node.memoizedState?.memoizedState
-    
+    let curMemoNode = node.memoizedState;
+    /* 
+    ** Look for deps and its values
+    ** deps[1] - tells which component is subscribed to which atom/selector
+    ** deps[2] at index of 2 - recoil state data 
+    */
     if(curMemoizedNode) {
-      console.log('curNode', curMemoizedNode, node)
       while (findingDeps) {
         if(curMemoizedNode.deps) {
           if (curMemoizedNode.deps[1].key) {
             if(cache.atomSelector.includes(curMemoizedNode.deps[1])) {
-              // setRecoil(curMemoizedNode.deps[2].current.getState());
               findingDeps = false;
             }
             else {
@@ -70,27 +76,44 @@ const getRecoilStateData = (node: any) => {
           break;
         }
       }
-
+    }
+    // Edge case to test recoil apps with recoil version lower than 0.3.1
+    if(curMemoNode) {
+      while (findingDepsPartTwo) {
+        if(curMemoNode.memoizedState) {
+          if (curMemoNode.memoizedState.current) {
+            if(curMemoNode.memoizedState.current.getState) {
+                cache.changes = lodash.cloneDeep(curMemoNode.memoizedState.current.getState());
+                findingDepsPartTwo = false;
+            }
+          }
+        }
+        if (curMemoNode.next) {
+          curMemoNode = curMemoNode.next;
+        }
+        else {
+          break;
+        }
+      }
     }
   }
   return cache;
 }
 
-// return Fiber Root Object
+// Get data from iframe and return Fiber Root object
 export const getFiberRoot = () => {
   const iFrame: HTMLElement | null = document.getElementById('frameId');
   const root = iFrame?.contentDocument.getElementById('root');
   const fiberData = lodash.cloneDeep(root?._reactRootContainer._internalRoot.current);
-  console.log('from fiberparsing', fiberData);
   const fiberParsedData = getNodes(fiberData);
   return fiberParsedData;
 };
    
-//checking if child is in parent
+// Check if parent has a child for setting up edges in React Flow component tree
 export const checkChild = ( child: any, parent: any, boolean = [false] ) => {
   if(parent.children) {
     parent.children.forEach(el => {
-      //checking is el is an array
+      // Check if each el is an array
       if(Array.isArray(el)) {
         el.forEach(element => {
           if(element.name === child.data.label) {
@@ -101,7 +124,7 @@ export const checkChild = ( child: any, parent: any, boolean = [false] ) => {
           }
         })
       }
-      //otherwise el is an object
+      // Otherwise if el is an object
       else {
         if(el.name === child.data.label) {
           return boolean[0] = true
@@ -115,11 +138,11 @@ export const checkChild = ( child: any, parent: any, boolean = [false] ) => {
   return boolean[0];
 };
 
+// Get recoil tree data
 export const getRecoilData = (node: any) => {
   let recoilData: any;
-
   const lookingForData = (curNode: any) => {
-    curNode.forEach(el => {
+    curNode.forEach((el: any) => {
       if(el.recoilNode.changes.currentTree) {
         recoilData = el.recoilNode.changes
       }
@@ -130,8 +153,5 @@ export const getRecoilData = (node: any) => {
     return;
   }
   lookingForData(node.children);
-
   return recoilData;
 }
-
-

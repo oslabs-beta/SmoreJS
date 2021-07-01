@@ -1,26 +1,28 @@
+// User Sign up Component
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useRecoilState } from 'recoil';
+import { useHistory } from "react-router-dom";
+import {TextField, Button} from '@material-ui/core/';
+import atoms from '../atoms';
 
 const SignUp: FunctionComponent = (props: any) => {
-  
+
+  // using the useHistory hook to route react components
   let history = useHistory();
-
   const [signupSuccess, setSignup] = useState(false);
-
+  const [curUser, setUser] = useRecoilState(atoms.currentUser);
+  // When successfully logged in, route page to app component
   useEffect(() => {
-    console.log('signedup', signupSuccess);
     if(signupSuccess) {
-      console.log('signed up');
       history.push("/app");
     }
   })
-
+  // Handle sign up request
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const userData = document.getElementById('signupUsername').value;
     const passData: string | null = document.getElementById('signupPassword').value;
     
-    console.log('signup event', userData);
     fetch('http://localhost:3003/electron/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,26 +30,24 @@ const SignUp: FunctionComponent = (props: any) => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("signed up", data);
         setSignup(data["signed up"]);
+        setUser(data.user);
       })
       .catch(err => console.log('signup err', err))
   }
 
   return (
     <div>
-      <form id="signupForm" onSubmit={handleSubmit}>
+      <form id="signupForm">
         <label>
-          Username: 
-          <input name="username" id="signupUsername" className="userInputField"></input>
+          <TextField id="signupUsername" label="Username" variant="outlined" className="userInputField"/>
         </label>
         <br></br>
         <label>
-          Password:
-          <input type="password" name="password" id="signupPassword" className="userInputField"></input>
+          <TextField id="signupPassword" label="Password" variant="outlined" className="userInputField"/>
         </label>
         <br></br>
-        <input type="submit" value="Sign Up"></input>
+        <Button variant="contained" color="primary" onClick={handleSubmit}> Sign up </Button>
       </form>
     </div>
   )
