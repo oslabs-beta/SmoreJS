@@ -17,11 +17,11 @@ function createWindow() {
     },
     
   });
-  // mainWindow.loadURL(url.format({
-  //   pathname: 'index.html',    /* Attention here: origin is path.join(__dirname, 'index.html') */
-  //   protocol: 'file',
-  //   slashes: true
-  // }))
+  mainWindow.loadURL(url.format({
+    pathname: 'index.html',    /* Attention here: origin is path.join(__dirname, 'index.html') */
+    protocol: 'file',
+    slashes: true
+  }))
 
   if (process.env.NODE_ENV === "development") {
     console.log('development')
@@ -29,12 +29,12 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   } else {
     console.log('production')
-    mainWindow.loadURL('../index.html'
-      // url.format({
-      //   pathname: path.join(__dirname, "index.html"),
-      //   protocol: "file:",
-      //   slashes: true,
-      // })
+    mainWindow.loadURL(
+      url.format({
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file:",
+        slashes: true,
+      })
     );
   }
 
@@ -53,4 +53,5 @@ app.on("ready", () => {
   })
   createWindow()
 });
+
 app.allowRendererProcessReuse = true;

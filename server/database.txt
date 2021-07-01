@@ -10,4 +10,4 @@ logs
   - id
   - user_id
   - dataName
-  - data 
+  - data

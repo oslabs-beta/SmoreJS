@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+// this test file tests sever side end points
+
 const request = require('supertest');
 
 const server = 'http://localhost:3003';
