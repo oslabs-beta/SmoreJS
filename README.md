@@ -1,5 +1,5 @@
  
-# [SmoreJS](https://smorejs.com) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/oslabs-beta/smorejs/blob/master/LICENSE) [![npm version](https:///npm/v/:scope/:SmoreJS)](https://npmjs.com/package/smorejs)[![circleCI?]()](url) [![PRs Welcome] ()](how-to-contribute)
+# [SmoreJS](https://smorejs.com) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-orange.svg)](https://github.com/oslabs-beta/smorejs/blob/master/LICENSE) 
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -97,10 +97,9 @@ Users are also able to see logs of their state data, which include the version n
 Distributed under the MIT License. See [`LICENSE`](https://github.com/oslabs-beta/atomos/blob/main/LICENSE) for more information.
 
 
-https://github.com/eileenlee115
-https://www.linkedin.com/in/eileenlee115/
-https://eileenlee115.medium.com/introducing-smorejs-state-management-optimization-for-recoil-9963a069e201
-http://smorejs.com
+
+[@Medium](https://eileenlee115.medium.com/introducing-smorejs-state-management-optimization-for-recoil-9963a069e201)
+[@SmoreJS](http://smorejs.com)
 
 
 # The Engineers
