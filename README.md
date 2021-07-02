@@ -12,18 +12,11 @@
  
 ### State Management Optimization for Recoil
  
-&middot;_description_
- 
 SmoreJS is an Electron based GUI that provides a testing environment for applications using Recoil. When a user's application is loaded, Smore displays the application and its initial state. Upon clicking the update button, users will be able to see an interactive component tree that visualizes component relationships and subscriptions to atoms and selectors. When the state from the user's application change, Smore updates the component tree to reflect the change by highlighting the node of the component that updated. Users are also able to see all the state data from their application. Smore will log the differences between each render and the user can store and save this data in a database. Smore facilitates the optimization of users' applications by allowing the users to visualize the changes in state in Recoil atoms and selectors for an easier debugging process.
 
 ****
-SmoreJS was built in a Node.js environment with an Electron shell. It is primarily written in TypeScript and uses
-//Facebook's//
-experimental Recoil library for state management.
+SmoreJS was built in a Node.js environment with an Electron shell. It is primarily written in TypeScript and uses Facebook's experimental Recoil library for state management.
 
-&middot;_graphic_
-&middot;_dependencies/needs in addition to SmoreJS_
- 
 # Installation
  
 To test your application with SmoreJS:
@@ -78,7 +71,7 @@ Upon clicking update, Smore will display an interactive component tree that show
 </p>
 
 ## State Data Display
-In this view you can see an in depth view into the application's state. You can see how many times a component has rendered. The components and the atoms or selectors that they are subscribed to and their values. 
+In this display you can see an in depth view into the application's state. You can see your application's components and the atoms or selectors that they are subscribed. You can see how many times a component has rendered and the values of the current state. 
 
 <p align="center">
   <img src="assets/RecoilStateData.gif" alt="Recoil State Data" width="600px">
