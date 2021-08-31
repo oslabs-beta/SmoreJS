@@ -87,7 +87,7 @@ Users are also able to see logs of their state data, which include the version n
 
 
 # License
-Distributed under the MIT License. See [`LICENSE`](https://github.com/oslabs-beta/atomos/blob/main/LICENSE) for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/oslabs-beta/SmoreJS/blob/main/LICENSE) for more information.
 
 
 
