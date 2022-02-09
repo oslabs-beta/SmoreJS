@@ -12,7 +12,7 @@ app.get('/', ( req: any, res: any ) => {
   res.status(200).json({ name: 'eileen' });
 });
 
-// Organize all endpoint routes from electron API's
+// Organize all endpoint routes from electron APIs
 app.use('/electron', electronRouter);
 
 // 404 handler
